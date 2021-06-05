@@ -29,6 +29,7 @@ namespace RestWithASPNETUdemy.Controllers
             return BadRequest("Invalid Input");
         }
 
+        [HttpGet("sub/{firstNumber}/{secondNumber}")]
         public IActionResult Subtraction(string firstNumber, string secondNumber)
         {
             if (IsNumeric(firstNumber) && IsNumeric(secondNumber))
@@ -39,6 +40,7 @@ namespace RestWithASPNETUdemy.Controllers
             return BadRequest("Invalid Input");
         } 
 
+        [HttpGet("multiply/{firstNumber}/{secondNumber}")]
         public IActionResult Multiply(string firstNumber, string secondNumber)
         {
             if (IsNumeric(firstNumber) && IsNumeric(secondNumber))
@@ -49,6 +51,7 @@ namespace RestWithASPNETUdemy.Controllers
             return BadRequest("Invalid Input");
         }
 
+        [HttpGet("divide/{firstNumber}/{secondNumber}")]
         public IActionResult Divide(string firstNumber, string secondNumber)
         {
             if (IsNumeric(firstNumber) && IsNumeric(secondNumber))
@@ -58,6 +61,8 @@ namespace RestWithASPNETUdemy.Controllers
             }
             return BadRequest("Invalid Input");
         } 
+
+        [HttpGet("average/{firstNumber}/{secondNumber}")]
         public IActionResult Average(string firstNumber, string secondNumber)
         {
             if (IsNumeric(firstNumber) && IsNumeric(secondNumber))
@@ -66,16 +71,18 @@ namespace RestWithASPNETUdemy.Controllers
                 return Ok(average.ToString());
             }
             return BadRequest("Invalid Input");
-        } 
-        public IActionResult SquareRoot(string firstNumber, string secondNumber)
+        }
+
+        [HttpGet("square-root/{firstNumber}")]
+        public IActionResult squareRoot(string firstNumber)
         {
-            if (IsNumeric(firstNumber) && IsNumeric(secondNumber))
+            if (IsNumeric(firstNumber))
             {
-                var squareRoot = (ConvertToDecimal(firstNumber) + ConvertToDecimal(secondNumber)) / 2;
+                var squareRoot = Math.Sqrt((double)ConvertToDecimal(firstNumber));
                 return Ok(squareRoot.ToString());
             }
             return BadRequest("Invalid Input");
-        } 
+        }
 
         private bool IsNumeric(string strNumber)
         {
