@@ -12,9 +12,11 @@ namespace RestWithASPNETUdemy.Controllers
 
         private readonly ILogger<PersonController> _logger;
 
-
+        // Declarando a service usada seria tipo o @autowires da personService
         private IPersonService _personService;
 
+        // ja que não tem a @autowired tem q injetar manualmente a instancia personServer
+        // quando criar uma instancia da person controller
         public PersonController(ILogger<PersonController> logger, IPersonService personService)
         {
             _logger = logger;
@@ -27,6 +29,7 @@ namespace RestWithASPNETUdemy.Controllers
             return Ok(_personService.FindAll());
         }
 
+        // Maps GET == https://localhost:{port}/api/person/{id}
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
@@ -34,7 +37,7 @@ namespace RestWithASPNETUdemy.Controllers
             if (person == null) return NotFound();
             return Ok(person);
         }
-
+        //frombody = requestbody
         [HttpPost]
         public IActionResult Post([FromBody] Person person)
         {
