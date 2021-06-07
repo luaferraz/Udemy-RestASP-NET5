@@ -1,10 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Internal;
-using RestWithASPNETUdemy.Model;
-using RestWithASPNETUdemy.Model.Context;
+﻿using RestWithASPNETUdemy.Model;
 using RestWithASPNETUdemy.Repository;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace RestWithASPNETUdemy.Services.Implementations
 {
