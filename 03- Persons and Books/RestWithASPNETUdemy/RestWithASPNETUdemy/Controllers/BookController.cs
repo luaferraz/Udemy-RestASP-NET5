@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using RestWithASPNETUdemy.Model;
 using RestWithASPNETUdemy.Business;
+using RestWithASPNETUdemy.Data.VO;
+using RestWithASPNETUdemy.Model;
 
 namespace RestWithASPNETUdemy.Controllers
 {
-
     [ApiVersion("1")]
     [ApiController]
     [Route("api/[controller]/v{version:apiVersion}")]
@@ -14,12 +14,12 @@ namespace RestWithASPNETUdemy.Controllers
 
         private readonly ILogger<BookController> _logger;
 
-        private IBookService _bookService;
+        private readonly IBookService _bookService;
 
-        public BookController(ILogger<BookController> logger, IBookService bookBusiness)
+        public BookController(ILogger<BookController> logger, IBookService bookService)
         {
             _logger = logger;
-            _bookService = bookBusiness;
+            _bookService = bookService;
         }
 
         [HttpGet]
@@ -31,20 +31,18 @@ namespace RestWithASPNETUdemy.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
-            var book = _bookService.FindByID(id);
-            if (book == null) return NotFound();
-            return Ok(book);
+            return Ok(_bookService.FindByID(id));
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Book book)
+        public IActionResult Post([FromBody] BookVO book)
         {
             if (book == null) return BadRequest();
             return Ok(_bookService.Create(book));
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] Book book)
+        public IActionResult Put([FromBody] BookVO book)
         {
             if (book == null) return BadRequest();
             return Ok(_bookService.Update(book));
@@ -53,8 +51,9 @@ namespace RestWithASPNETUdemy.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            _bookServices.Delete(id);
+            _bookService.Delete(id);
             return NoContent();
         }
     }
+
 }
