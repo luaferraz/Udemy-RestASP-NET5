@@ -36,6 +36,13 @@ namespace RestWithASPNETUdemy
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //CORS
+            services.AddCors(options => options.AddDefaultPolicy(builder =>
+            {
+                builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+            }));
 
             services.AddControllers();
 
@@ -47,6 +54,7 @@ namespace RestWithASPNETUdemy
                 MigrateDatabase(connection);
             }
 
+            //Habilitando o uso de XML e JSON na api
             services.AddMvc(options =>
             {
                 options.RespectBrowserAcceptHeader = true;
@@ -58,6 +66,7 @@ namespace RestWithASPNETUdemy
             })
             .AddXmlSerializerFormatters();
 
+            //HATEOAS
             var filterOptions = new HyperMediaFilterOptions();
             filterOptions.ContentResponseEnricherList.Add(new PersonEnricher());
             filterOptions.ContentResponseEnricherList.Add(new BookEnricher());
@@ -100,6 +109,11 @@ namespace RestWithASPNETUdemy
 
             app.UseRouting();
 
+            // o cors sempre tem que ficar depois de UseHttpsRedirection/UseRouting e antes de
+            //UseEndPoints, caso contrário não vai funcionar direito;
+            app.UseCors();
+
+            //Sweagger start
             app.UseSwagger();
 
             app.UseSwaggerUI(c => {
@@ -119,6 +133,7 @@ namespace RestWithASPNETUdemy
                 endpoints.MapControllerRoute("DefaultApi", "{controller=values}/{id?}");
             });
         }
+        //Evolve (database)
         private void MigrateDatabase(string connection)
         {
             try
