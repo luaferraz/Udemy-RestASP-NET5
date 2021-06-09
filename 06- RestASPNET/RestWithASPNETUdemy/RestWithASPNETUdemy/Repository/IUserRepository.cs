@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using RestWithASPNETUdemy.Data.VO;
+using RestWithASPNETUdemy.Model;
 
 namespace RestWithASPNETUdemy.Repository
 {
-    interface IUserRepository
+    public interface IUserRepository
     {
+        User ValidateCredential(UserVO user);
+
+        User RefreshUserInfo(User user); 
     }
 }

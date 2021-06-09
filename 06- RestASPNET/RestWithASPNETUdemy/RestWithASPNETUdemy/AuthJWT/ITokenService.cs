@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 namespace RestWithASPNETUdemy.AuthJWT
 {
-    public interface ITokenInterface
+    public interface ITokenService
     {
         string GenerateAccessToken(IEnumerable<Claim> claims);
         string GenerateRefreshToken();
