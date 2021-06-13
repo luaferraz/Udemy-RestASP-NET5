@@ -27,15 +27,17 @@ namespace RestWithASPNETUdemy.Controllers
             _personService = personService;
         }
 
-        [HttpGet]
+        [HttpGet("{sortDirection}/{pageSize}/{page}")]
         [ProducesResponseType((200), Type = typeof(List<PersonVO>))]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult Get()
+        public IActionResult Get(
+            [FromQuery] string name, string sortDirection,
+            int pageSize, int page)
         {
-            return Ok(_personService.FindAll());
+            return Ok(_personService.FIndWithPagedSearch(name, sortDirection, pageSize, page));
         }
 
         [HttpGet("{id}")]
@@ -47,6 +49,19 @@ namespace RestWithASPNETUdemy.Controllers
         public IActionResult Get(long id)
         {
             var person = _personService.FindByID(id);
+            if (person == null) return NotFound();
+            return Ok(person);
+        }
+
+        [HttpGet("findPersonByName")]
+        [ProducesResponseType((200), Type = typeof(PersonVO))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult Get([FromQuery]string firstName, [FromQuery] string lastName)
+        {
+            var person = _personService.FindByName(firstName, lastName);
             if (person == null) return NotFound();
             return Ok(person);
         }
@@ -71,6 +86,18 @@ namespace RestWithASPNETUdemy.Controllers
         {
             if (person == null) return BadRequest();
             return Ok(_personService.Update(person));
+        }
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType((200), Type = typeof(PersonVO))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult Patch(long id)
+        {
+            var person = _personService.Disable(id);
+            return Ok(person);
         }
 
         [HttpDelete("{id}")]

@@ -7,5 +7,7 @@ namespace RestWithASPNETUdemy.Services
         TokenVO ValidadeCredentials(UserVO user);
         TokenVO ValidadeCredentials(TokenVO token);
 
+        bool RevokeToken(string userName);
+
     }
 }

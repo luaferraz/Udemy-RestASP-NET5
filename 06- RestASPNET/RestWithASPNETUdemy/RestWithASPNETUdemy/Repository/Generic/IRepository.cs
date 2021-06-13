@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace RestWithASPNETUdemy.Repository
 {
-    public interface IRepository<T> where T : BaseEntity
+    public interface IPersonRepository<T> where T : BaseEntity
     {
         T Create(T item);
         T FindByID(long id);
@@ -12,5 +12,9 @@ namespace RestWithASPNETUdemy.Repository
         T Update(T item);
         void Delete(long id);
         bool Exists(long id);
+
+        List<T> FindWithPagedSearch(string query);
+
+        int GetCount(string query);
     }
 }

@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestWithASPNETUdemy.Data.VO;
 using RestWithASPNETUdemy.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RestWithASPNETUdemy.Controllers
 {
@@ -40,6 +36,20 @@ namespace RestWithASPNETUdemy.Controllers
             if (token == null) return BadRequest("Invalid client request");
 
             return Ok(token);
+        }
+
+        [HttpGet]
+        [Route("revoke")]
+        [Authorize("Bearer")]
+        public IActionResult Revoke()
+        {
+            var username = User.Identity.Name;
+
+            var result = _loginService.RevokeToken(username);
+
+            if (!result) return BadRequest("Invalid client request");
+
+            return NoContent();
         }
     }
 }
